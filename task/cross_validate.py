@@ -8,7 +8,7 @@ import time
 from argparse import Namespace
 from logging import Logger
 from typing import Tuple
-
+from datetime import datetime
 import numpy as np
 
 from grover.util.utils import get_task_names
@@ -32,7 +32,21 @@ def cross_validate(args: Namespace, logger: Logger = None) -> Tuple[float, float
 
     # Run training with different random seeds for each fold
     all_scores = []
+    info('hyperparameter')
+    info(f'batch_size {args.batch_size}')
+    info(f'init_lr {args.init_lr}')
+    info(f'max_lr {args.max_lr}')
+    info(f'final_lr {args.final_lr}')
+    info(f'dropout {args.dropout}')
+    info(f'attn_hidden {args.attn_hidden}')
+    info(f'attn_out {args.attn_out}')
+    info(f'dist_coff {args.dist_coff}')
+    info(f'bond_drop_rate {args.bond_drop_rate}')
+    info(f'ffn_num_layers {args.ffn_num_layers}')
+    info(f'ffn_hidden_size {args.ffn_hidden_size}')
+    total_st = datetime.now()
     time_start = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
+    info(f"HPO start time: {time_start}")
     for fold_num in range(args.num_folds):
         info(f'Fold {fold_num}')
         args.seed = init_seed + fold_num
@@ -43,6 +57,11 @@ def cross_validate(args: Namespace, logger: Logger = None) -> Tuple[float, float
         else:
             model_scores = run_evaluation(args, logger)
         all_scores.append(model_scores)
+    time_end = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
+    total_ed = datetime.now()
+    total_diff = total_ed - total_st
+    info(f"HPO end time: {time_end}")
+    info(f"total running time: {total_diff}")
     all_scores = np.array(all_scores)
 
     # Report scores for each fold
