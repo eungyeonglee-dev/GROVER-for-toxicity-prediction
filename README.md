@@ -1,26 +1,11 @@
 
-Self-Supervised Graph Transformer on Large-Scale Molecular Data
+Application of Self-Supervised Graph Transformers for
+Developing Classification Models for Tox21 Bioactivity and
+Regression Models to Predict Inhalation Toxicity Lethal
 ===
-This is a Pytorch implementation of the paper: Self-Supervised Graph Transformer on Large-Scale Molecular Data. 
-
-## Requirements
- * Python 3.6.8
- * For the other packages, please refer to the `requirements.txt`. To resolve  `PackageNotFoundError`, please add the following channels before creating the environment. 
- ```bash
-    conda config --add channels pytorch
-    conda config --add channels rdkit
-    conda config --add channels conda-forge
-    conda config --add channels rmg
- ```
-You can just execute following command to create the conda environment.
-```
-conda create --name chem --file requirements.txt
-```
- * We also provide the Dockerfile to build the environment, please refer to the `Dockerfile` for more details. 
 
 ## Pretained Model Download
-We provide the pretrained models used in paper. 
-   - [GROVER<sub>base</sub>](https://ai.tencent.com/ailab/ml/ml-data/grover-models/pretrain/grover_base.tar.gz)
+It was provided by [Self-Supervised Graph Transformer on Large-Scale Molecular Data paper](https://github.com/tencent-ailab/grover)
    - [GROVER<sub>large</sub>](https://ai.tencent.com/ailab/ml/ml-data/grover-models/pretrain/grover_large.tar.gz) 
 
 
