@@ -5,10 +5,10 @@ dataset=$2
 hostname=`hostname -s`
 
 # model save dir
-dir=/grover-for-toxicity/model/finetune/${dataset}/${jobid}/${hostname}
+dir=/GROVER-for-toxicity-prediction/model/finetune/${dataset}/${jobid}/${hostname}
 
 # dataset, features dir
-BASELINE='/grover-for-toxicity/exampledata/finetune'
+BASELINE='/GROVER-for-toxicity-prediction/exampledata/finetune'
 # dataset is the one of tox21, lc50, lc50_2
 data_path="${BASELINE}/${dataset}.csv" # only smiles string
 features_path="${BASELINE}/${dataset}.npz"
@@ -91,11 +91,11 @@ if [[ ! -e $save_dir ]]; then
     echo "dist_coff: $dist_coff"
     echo "bond_drop_rate: $bond_drop_rate"
 
-    /opt/conda/envs/horovod/bin/python /grover-for-toxicity/main.py finetune --epochs 100 \
+    /opt/conda/envs/horovod/bin/python /GROVER-for-toxicity-prediction/main.py finetune --epochs 100 \
                                    --data_path $data_path \
                                    --features_path $features_path \
                                    --save_dir $save_dir \
-                                   --checkpoint_path /grover-for-toxicity/grover_large.pt \
+                                   --checkpoint_path /GROVER-for-toxicity-prediction/grover_large.pt \
                                    --split_type scaffold_balanced \
                                    --num_folds 3 \
                                    --ensemble_size 1 \

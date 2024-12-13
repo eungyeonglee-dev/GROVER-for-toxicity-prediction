@@ -9,9 +9,9 @@
 ##===============================================
 GRES="gpu:a10:1"
 . _00_conf.sh
-mkdir -p $HOME/grover-for-toxicity/log
-cd $HOME/grover-for-toxicity/log
-mkdir -p $HOME/grover-for-toxicity/log/$SLURM_JOB_ID
+mkdir -p $HOME/GROVER-for-toxicity-prediction/log
+cd $HOME/GROVER-for-toxicity-prediction/log
+mkdir -p $HOME/GROVER-for-toxicity-prediction/log/$SLURM_JOB_ID
 echo DATA: $dataset
 
 INIT_CONTAINER_SCRIPT=$(cat <<EOF
@@ -29,7 +29,7 @@ INIT_CONTAINER_SCRIPT=$(cat <<EOF
 EOF
 )
 
-ENROOT_SCRIPT="cd /grover-for-toxicity/ && \
+ENROOT_SCRIPT="cd /GROVER-for-toxicity-prediction/ && \
                bash _01_run_inter_hpo.sh $SLURM_JOB_ID $dataset"
 
 SRUN_SCRIPT=$(cat <<EOF
@@ -37,7 +37,7 @@ SRUN_SCRIPT=$(cat <<EOF
 
     enroot start --root \
                 --rw \
-                -m $HOME/grover-for-toxicity:/grover-for-toxicity \
+                -m $HOME/GROVER-for-toxicity-prediction:/GROVER-for-toxicity-prediction \
                 grover \
                 bash -c "$ENROOT_SCRIPT
 EOF
@@ -46,6 +46,6 @@ EOF
 srun --partition=$SLURM_JOB_PARTITION \
      --gres=$GRES \
      --cpus-per-task=14 \
-     -o $HOME/grover-for-toxicity/log/%j/%N.out \
-     -e $HOME/grover-for-toxicity/log/%j/%N.err \
+     -o $HOME/GROVER-for-toxicity-prediction/log/%j/%N.out \
+     -e $HOME/GROVER-for-toxicity-prediction/log/%j/%N.err \
      bash -c "$SRUN_SCRIPT \" "

@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 import os
 import shutil
 import numpy as np
+import pandas as pd
 import deepchem as dc
 from deepchem.molnet import load_tox21
 
@@ -19,19 +20,21 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 from itertools import product
 from collections.abc import Iterable
-from tqdm import tqdm
-import pandas as pd
+
 import tensorflow as tf
 import copy
 import sys
 import warnings
-warnings.filterwarnings(action='ignore')
 import logging
+
+import time
+from datetime import datetime
+
+warnings.filterwarnings(action='ignore')
 logging.getLogger('tensorflow').disabled = True
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-import time
-from datetime import datetime
+
 
 def model_dataset(model_name):
     # Only for debug!
@@ -157,7 +160,6 @@ def model_hpo(model_name, chunk_number, part):
     now = time.time()
     dt = datetime.fromtimestamp(now).strftime("%Y%m%d%H%M%S")
     train_dataset, valid_dataset, test_dataset, tox21_tasks, transformers = model_dataset(model_name)
-    # print(len(train_dataset))
     
     params_dict = hpo_range(model_name)
     params = ParameterGrid(params_dict)
@@ -194,9 +196,8 @@ def model_hpo(model_name, chunk_number, part):
             else:
                 result = pd.concat([result, df])
     result = result[['sub_index','total_index','metric', 'score', *hp_columns, *tox21_tasks]]
-    result.to_csv(f"tox21_{model_name}_{part}_{dt}.csv")
     print(f"save result path  => tox21_{model_name}_{part}_{dt}.csv")
-    
+    result.to_csv(f"./_result/tox21_{model_name}_{part}_{dt}.csv")
     
 def model_evaluate(sub_index, total_index, model, model_name, r, test_dataset, transformers, tox21_tasks):
     # Fit models
@@ -236,7 +237,6 @@ if __name__ == "__main__":
     model_name=sys.argv[1]
     chunk_number = sys.argv[2]
     part = sys.argv[3]
-    # hostname=socket.gethostname()
     batch_size = 50
     model_hpo(model_name, chunk_number, part)
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_IMAGE_PATH="$HOME/grover-for-toxicity/container/grover.sqsh"
+CONTAINER_IMAGE_PATH="$HOME/GROVER-for-toxicity-prediction-prediction/container/grover.sqsh"
 CONTAINER_PATH="/enroot/$UID/data/grover"
 CONTAINER_NAME="grover"
 RELOAD_CONTAINER=false

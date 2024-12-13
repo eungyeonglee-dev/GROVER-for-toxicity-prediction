@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --nodes=5
+#SBATCH --nodes=3
 #SBATCH --partition=gpu2
 #SBATCH -o ../log/%j/sbatch-%n.out
 #SBATCH -e ../log/%j/sbatch-%n.err
@@ -9,8 +9,8 @@
 . _00_conf.sh
 
 CPUS_PER_TASK=14
-cd $HOME/grover-for-toxicity/log
-mkdir -p $HOME/grover-for-toxicity/log/$SLURM_JOB_ID
+cd $HOME/GROVER-for-toxicity-prediction/log
+mkdir -p $HOME/GROVER-for-toxicity-prediction/log/$SLURM_JOB_ID
 
 filename="_01_tox21_hpo.py"
 
@@ -30,7 +30,7 @@ INIT_CONTAINER_SCRIPT=$(cat <<EOF
 EOF
 )
 
-ENROOT_SCRIPT="cd /grover-for-toxicity/ml && \
+ENROOT_SCRIPT="cd /GROVER-for-toxicity-prediction/ml && \
                /opt/conda/envs/deepchem/bin/python $filename $model_name $chunk_num"
 
 SRUN_SCRIPT=$(cat <<EOF
@@ -49,7 +49,7 @@ SRUN_SCRIPT=$(cat <<EOF
 
     enroot start --root \
                 --rw \
-                -m $HOME/grover-for-toxicity:/grover-for-toxicity \
+                -m $HOME/GROVER-for-toxicity-prediction:/GROVER-for-toxicity-prediction \
                 $CONTAINER_NAME \
                 bash -c "$ENROOT_SCRIPT \$local_rank "
     
